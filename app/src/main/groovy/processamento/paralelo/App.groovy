@@ -5,6 +5,8 @@ package processamento.paralelo
 
 class App {
 
+    static private final Long nEps = 4
+
     static void main(String[] args) {
         println("Quantos fatoriais você quer?")
         Scanner scanner = new Scanner(System.in)
@@ -18,18 +20,32 @@ class App {
             vetor[i] = scanner.nextInt()
         }
 
-        BigDecimal[] fat = new BigDecimal[tam]
+        List<Thread> threads = new ArrayList<Thread>()
 
-        for (int i = 0; i < tam; i++) {
-            fat[i] = 1
+        for (int i = 0; i < nEps; i++) {
+            final int currentThread = i
 
-            for (int j = 2; j <= vetor[i]; j++) {
-                fat[i] = (fat[i] * j).toBigDecimal()
+            Runnable runnable = new Runnable() {
+                void run() {
+                    for (int y = currentThread; y < vetor.size(); y += nEps) {
+                        BigDecimal fat = 1
+
+                        for (int j = 2; j <= vetor[y]; j++) {
+                            fat = (fat * j).toBigDecimal()
+                        }
+
+                        println("Fatorial de ${vetor[y]} = ${fat.toString()}, executado pela thread ${Thread.currentThread().name} em ${System.currentTimeMillis()}")
+                    }
+                }
             }
+
+            Thread thread = new Thread(runnable)
+
+            threads.add(thread)
         }
 
-        for (int i = 0; i < tam; i++) {
-            println("Fatorial de ${vetor[i]} = ${fat[i].toString()}")
+        for (Thread thread : threads) {
+            thread.start()
         }
 
     }
