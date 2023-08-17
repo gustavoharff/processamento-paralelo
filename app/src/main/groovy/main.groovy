@@ -1,16 +1,10 @@
-Long nEps = 4
+Long nEps = 2
 
-println("Quantos fatoriais você quer?")
-Scanner scanner = new Scanner(System.in)
-int tam = scanner.nextInt()
+int tam = 5
 
-println("Digite ${tam} números inteiros:")
-int[] vetor = new int[tam]
+int[] vetor = [100000, 8, 100001, 9, 100002]
 
-for (int i = 0; i < tam; i++) {
-    println("Digite vetor[${i}]:")
-    vetor[i] = scanner.nextInt()
-}
+Arrays.sort(vetor)
 
 List<Thread> threads = new ArrayList<Thread>()
 
@@ -26,7 +20,7 @@ for (int i = 0; i < nEps; i++) {
                     fat = (fat * j).toBigDecimal()
                 }
 
-                println("Fatorial de ${vetor[y]} = ${fat.toString()}, executado pela thread ${Thread.currentThread().name} em ${System.currentTimeMillis()}")
+                println("Fatorial de ${vetor[y]}, executado pela thread ${Thread.currentThread().name} em ${System.currentTimeMillis()}")
             }
         }
     }
